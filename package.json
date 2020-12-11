@@ -6,5 +6,8 @@
         "ws": "latest",
         "lang": "latest",
         "webrtc.io": "latest"
+    },
+    "devDependencies": {
+        "sys": "0.0.1"
     }
 }

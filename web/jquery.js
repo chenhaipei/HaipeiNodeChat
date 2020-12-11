@@ -193,7 +193,7 @@
 
         css: function (key, value) {
             // ignore negative width and height values
-            if ((key == 'width' || key == 'height') && parseFloat(value) < 0)
+            if ((key === 'width' || key === 'height') && parseFloat(value) < 0)
                 value = undefined;
             return this.attr(key, value, "curCSS");
         },
