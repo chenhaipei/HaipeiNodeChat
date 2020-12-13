@@ -1,10 +1,10 @@
-var videos = [];
-var rooms = [1, 2, 3, 4, 5];
-var PeerConnection = window.PeerConnection || window.webkitPeerConnection00 || window.webkitRTCPeerConnection;
+let videos = [];
+let rooms = [1, 2, 3, 4, 5];
+let PeerConnection = window.PeerConnection || window.webkitPeerConnection00 || window.webkitRTCPeerConnection;
 
 function getNumPerRow() {
-    var len = videos.length;
-    var biggest;
+    let len = videos.length;
+    let biggest;
 
     // Ensure length is even for better division.
     if (len % 2 === 1) {
@@ -19,20 +19,20 @@ function getNumPerRow() {
 }
 
 function subdivideVideos() {
-    var perRow = getNumPerRow();
-    var numInRow = 0;
-    for (var i = 0, len = videos.length; i < len; i++) {
-        var video = videos[i];
+    let perRow = getNumPerRow();
+    let numInRow = 0;
+    for (let i = 0, len = videos.length; i < len; i++) {
+        let video = videos[i];
         setWH(video, i);
         numInRow = (numInRow + 1) % perRow;
     }
 }
 
 function setWH(video, i) {
-    var perRow = getNumPerRow();
-    var perColumn = Math.ceil(videos.length / perRow);
-    var width = Math.floor((window.innerWidth) / perRow);
-    var height = Math.floor((window.innerHeight - 190) / perColumn);
+    let perRow = getNumPerRow();
+    let perColumn = Math.ceil(videos.length / perRow);
+    let width = Math.floor((window.innerWidth) / perRow);
+    let height = Math.floor((window.innerHeight - 190) / perColumn);
     video.width = width;
     video.height = height;
     video.style.position = "absolute";
@@ -41,8 +41,8 @@ function setWH(video, i) {
 }
 
 function cloneVideo(domId, socketId) {
-    var video = document.getElementById(domId);
-    var clone = video.cloneNode(false);
+    let video = document.getElementById(domId);
+    let clone = video.cloneNode(false);
     clone.id = "remote" + socketId;
     document.getElementById('videos').appendChild(clone);
     videos.push(clone);
@@ -50,7 +50,7 @@ function cloneVideo(domId, socketId) {
 }
 
 function removeVideo(socketId) {
-    var video = document.getElementById('remote' + socketId);
+    let video = document.getElementById('remote' + socketId);
     if (video) {
         videos.splice(videos.indexOf(video), 1);
         video.parentNode.removeChild(video);
@@ -58,7 +58,7 @@ function removeVideo(socketId) {
 }
 
 function addToChat(msg, color) {
-    var messages = document.getElementById('messages');
+    let messages = document.getElementById('messages');
     msg = sanitize(msg);
     if (color) {
         msg = '<span style="color: ' + color + '; padding-left: 15px">' + msg + '</span>';
@@ -74,9 +74,9 @@ function sanitize(msg) {
 }
 
 function initFullScreen() {
-    var button = document.getElementById("fullscreen");
+    let button = document.getElementById("fullscreen");
     button.addEventListener('click', function (event) {
-        var elem = document.getElementById("videos");
+        let elem = document.getElementById("videos");
         //show full screen
         elem.webkitRequestFullScreen();
     });
@@ -85,15 +85,15 @@ function initFullScreen() {
 //generate roomid
 
 function initNewRoom() {
-    var button = document.getElementById("newRoom");
+    let button = document.getElementById("newRoom");
 
     button.addEventListener('click', function (event) {
 
-        var chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz";
-        var string_length = 8;
-        var randomstring = '';
-        for (var i = 0; i < string_length; i++) {
-            var rnum = Math.floor(Math.random() * chars.length);
+        let chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz";
+        let string_length = 8;
+        let randomstring = '';
+        for (let i = 0; i < string_length; i++) {
+            let rnum = Math.floor(Math.random() * chars.length);
             randomstring += chars.substring(rnum, rnum + 1);
         }
 
@@ -103,12 +103,12 @@ function initNewRoom() {
 }
 
 function initChat() {
-    var input = document.getElementById("chatinput");
-    var room = window.location.hash.slice(1);
-    var color = "#" + ((1 << 24) * Math.random() | 0).toString(16);
+    let input = document.getElementById("chatinput");
+    let room = window.location.hash.slice(1);
+    let color = "#" + ((1 << 24) * Math.random() | 0).toString(16);
 
     input.addEventListener('keydown', function (event) {
-        var key = event.which || event.keyCode;
+        let key = event.which || event.keyCode;
         if (key === 13) {
             rtc._socket.send(JSON.stringify({
                 "eventName": "chat_msg",
@@ -149,14 +149,14 @@ function init() {
     }
 
 
-    var room = window.location.hash.slice(1);
+    let room = window.location.hash.slice(1);
 
     //When using localhost
     rtc.connect("ws://localhost:8000/", room);
 
     rtc.on('add remote stream', function (stream, socketId) {
         console.log("ADDING REMOTE STREAM...");
-        var clone = cloneVideo('you', socketId);
+        let clone = cloneVideo('you', socketId);
         document.getElementById(clone.id).setAttribute("class", "");
         rtc.attachStream(stream, clone.id);
         subdivideVideos();

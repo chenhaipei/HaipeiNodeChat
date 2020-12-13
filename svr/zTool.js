@@ -1,11 +1,11 @@
 (function(exports) {
-	var SimpleMap = exports.SimpleMap = function() {
-			this.map = {};
-			this.mapSize = 0;
-		};
+	let SimpleMap = exports.SimpleMap = function () {
+		this.map = {};
+		this.mapSize = 0;
+	};
 
 	SimpleMap.prototype.put = function(key, value) {
-		var oldValue = this.map[key];
+		let oldValue = this.map[key];
 		this.map[key] = value;
 		if(!oldValue) {
 			this.mapSize++;
@@ -18,7 +18,7 @@
 	};
 
 	SimpleMap.prototype.remove = function(key) {
-		var v = this.map[key];
+		let v = this.map[key];
 		if(v) {
 			delete this.map[key];
 			this.mapSize--;
@@ -36,26 +36,26 @@
 	};
 
 	SimpleMap.prototype.keySet = function() {
-		var theKeySet = [];
-		for(var i in this.map) {
+		let theKeySet = [];
+		for(let i in this.map) {
 			theKeySet.push(i);
 		}
 		return theKeySet;
 	};
 
 	SimpleMap.prototype.values = function() {
-		var theValue = [];
-		for(var i in this.map) {
+		let theValue = [];
+		for(let i in this.map) {
 			theValue.push(this.map[i]);
 		}
 		return theValue;
 	};
 
-	var CircleList = exports.CircleList = function(maxSize) {
-			this.maxSize = (maxSize || 10);
-			this.list = [];
-			this.index = null;
-		};
+	let CircleList = exports.CircleList = function (maxSize) {
+		this.maxSize = (maxSize || 10);
+		this.list = [];
+		this.index = null;
+	};
 
 	CircleList.prototype.clear = function() {
 		this.list = [];
@@ -75,15 +75,15 @@
 	};
 
 	CircleList.prototype.values = function() {
-		var theValue = [];
+		let theValue = [];
 		if(null != this.index) {
 			if(this.list.length === this.maxSize) {
-				for(var i = this.index; i < this.maxSize; i++) {
+				for(let i = this.index; i < this.maxSize; i++) {
 					theValue.push(this.list[i]);
 				}
 			}
 
-			for(var j = 0; j < this.index; j++) {
+			for(let j = 0; j < this.index; j++) {
 				theValue.push(this.list[j]);
 			}
 		}

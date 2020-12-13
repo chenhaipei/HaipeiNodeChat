@@ -1,12 +1,12 @@
 //CLIENT
 // Fallbacks for vendor-specific variables until the spec is finalized.
-var PeerConnection = window.PeerConnection || window.webkitPeerConnection00 || window.webkitRTCPeerConnection;
-var URL = window.URL || window.webkitURL || window.msURL || window.oURL;
-var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
+let PeerConnection = window.PeerConnection || window.webkitPeerConnection00 || window.webkitRTCPeerConnection;
+let URL = window.URL || window.webkitURL || window.msURL || window.oURL;
+let getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
 
 (function () {
 
-    var rtc;
+    let rtc;
     if ('undefined' === typeof module) {
         rtc = this.rtc = {};
     } else {
@@ -26,14 +26,14 @@ var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || nav
     };
 
     rtc.fire = function (eventName, _) {
-        var events = rtc._events[eventName];
-        var args = Array.prototype.slice.call(arguments, 1);
+        let events = rtc._events[eventName];
+        let args = Array.prototype.slice.call(arguments, 1);
 
         if (!events) {
             return;
         }
 
-        for (var i = 0, len = events.length; i < len; i++) {
+        for (let i = 0, len = events.length; i < len; i++) {
             events[i].apply(null, args);
         }
     };
@@ -76,7 +76,7 @@ var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || nav
             });
 
             rtc._socket.onmessage = function (msg) {
-                var json = JSON.parse(msg.data);
+                let json = JSON.parse(msg.data);
                 rtc.fire(json.eventName, json.data);
             };
 
@@ -97,7 +97,7 @@ var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || nav
             });
 
             rtc.on('receive_ice_candidate', function (data) {
-                var candidate = new RTCIceCandidate(data);
+                let candidate = new RTCIceCandidate(data);
                 rtc.peerConnections[data.socketId].addIceCandidate(candidate);
                 rtc.fire('receive ice candidate', candidate);
             });
@@ -105,9 +105,9 @@ var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || nav
             rtc.on('new_peer_connected', function (data) {
                 rtc.connections.push(data.socketId);
 
-                var pc = rtc.createPeerConnection(data.socketId);
-                for (var i = 0; i < rtc.streams.length; i++) {
-                    var stream = rtc.streams[i];
+                let pc = rtc.createPeerConnection(data.socketId);
+                for (let i = 0; i < rtc.streams.length; i++) {
+                    let stream = rtc.streams[i];
                     pc.addStream(stream);
                 }
             });
@@ -133,8 +133,8 @@ var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || nav
 
 
     rtc.sendOffers = function () {
-        for (var i = 0, len = rtc.connections.length; i < len; i++) {
-            var socketId = rtc.connections[i];
+        for (let i = 0, len = rtc.connections.length; i < len; i++) {
+            let socketId = rtc.connections[i];
             rtc.sendOffer(socketId);
         }
     }
@@ -146,14 +146,14 @@ var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || nav
     }
 
     rtc.createPeerConnections = function () {
-        for (var i = 0; i < rtc.connections.length; i++) {
+        for (let i = 0; i < rtc.connections.length; i++) {
             rtc.createPeerConnection(rtc.connections[i]);
         }
     };
 
     rtc.createPeerConnection = function (id) {
         console.log('createPeerConnection');
-        var pc = rtc.peerConnections[id] = new PeerConnection(rtc.SERVER);
+        let pc = rtc.peerConnections[id] = new PeerConnection(rtc.SERVER);
         pc.onicecandidate = function (event) {
             if (event.candidate) {
                 rtc._socket.send(JSON.stringify({
@@ -185,7 +185,7 @@ var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || nav
     };
 
     rtc.sendOffer = function (socketId) {
-        var pc = rtc.peerConnections[socketId];
+        let pc = rtc.peerConnections[socketId];
         pc.createOffer(function (session_description) {
             pc.setLocalDescription(session_description);
             rtc._socket.send(JSON.stringify({
@@ -204,14 +204,14 @@ var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || nav
 
 
     rtc.receiveOffer = function (socketId, sdp) {
-        var pc = rtc.peerConnections[socketId];
+        let pc = rtc.peerConnections[socketId];
         pc.setRemoteDescription(new RTCSessionDescription(sdp));
         rtc.sendAnswer(socketId);
     };
 
 
     rtc.sendAnswer = function (socketId) {
-        var pc = rtc.peerConnections[socketId];
+        let pc = rtc.peerConnections[socketId];
         pc.createAnswer(function (session_description) {
             pc.setLocalDescription(session_description);
             rtc._socket.send(JSON.stringify({
@@ -225,19 +225,19 @@ var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || nav
                     console.log(error);
                 }
             });
-            var offer = pc.remoteDescription;
+            let offer = pc.remoteDescription;
         });
     };
 
 
     rtc.receiveAnswer = function (socketId, sdp) {
-        var pc = rtc.peerConnections[socketId];
+        let pc = rtc.peerConnections[socketId];
         pc.setRemoteDescription(new RTCSessionDescription(sdp));
     };
 
 
     rtc.createStream = function (opt, onSuccess, onFail) {
-        var options;
+        let options;
         onSuccess = onSuccess ||
             function () {
             };
@@ -288,9 +288,9 @@ var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || nav
 
 
     rtc.addStreams = function () {
-        for (var i = 0; i < rtc.streams.length; i++) {
-            var stream = rtc.streams[i];
-            for (var connection in rtc.peerConnections) {
+        for (let i = 0; i < rtc.streams.length; i++) {
+            let stream = rtc.streams[i];
+            for (let connection in rtc.peerConnections) {
                 rtc.peerConnections[connection].addStream(stream);
             }
         }

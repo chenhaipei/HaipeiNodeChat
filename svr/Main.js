@@ -1,17 +1,17 @@
-var sys = require("sys");
-var WebSocketServer = require('../node_modules/ws').Server;
-var chatLib = require("./chatLib");
-var EVENT_TYPE = chatLib.EVENT_TYPE;
-var PORT = chatLib.PORT;
-var wss = new WebSocketServer({
+let sys = require("sys");
+let WebSocketServer = require('../node_modules/ws').Server;
+let chatLib = require("./chatLib");
+let EVENT_TYPE = chatLib.EVENT_TYPE;
+let PORT = chatLib.PORT;
+let wss = new WebSocketServer({
     port: PORT
 });
 
-var zTool = require("./zTool");
-var onlineUserMap = new zTool.SimpleMap();
-var historyContent = new zTool.CircleList(100);
-var connCounter = 1;
-var uid = null;
+let zTool = require("./zTool");
+let onlineUserMap = new zTool.SimpleMap();
+let historyContent = new zTool.CircleList(100);
+let connCounter = 1;
+let uid = null;
 
 
 wss.on('connection', function (conn) {
@@ -19,14 +19,14 @@ wss.on('connection', function (conn) {
     //  conn.send(JSON.stringify({'uid':connCounter}));
     // });
     conn.on('message', function (message) {
-        var mData = chatLib.analyzeMessageData(message);
+        let mData = chatLib.analyzeMessageData(message);
 
         if (mData && mData.EVENT) {
             switch (mData.EVENT) {
                 case EVENT_TYPE.LOGIN:
                     // 新用户连接
                     uid = connCounter;
-                    var newUser = {
+                    let newUser = {
                         'uid': connCounter,
                         'nick': chatLib.getMsgFirstDataValue(mData)
                     };
@@ -58,9 +58,9 @@ wss.on('connection', function (conn) {
 
                 case EVENT_TYPE.SPEAK:
                     // 用户发言
-                    var content = chatLib.getMsgSecondDataValue(mData);
+                    let content = chatLib.getMsgSecondDataValue(mData);
                     //同步用户发言
-                    for (var j = 0; j < wss.clients.length; j++) {
+                    for (let j = 0; j < wss.clients.length; j++) {
                         wss.clients[j].send(JSON.stringify({
                             'user': onlineUserMap.get(chatLib.getMsgFirstDataValue(mData)),
                             'event': EVENT_TYPE.SPEAK,
@@ -110,8 +110,9 @@ wss.on('connection', function (conn) {
     });
     conn.on('close', function () {
         // 从在线用户列表移除
-        for (var k in onlineUserMap.keySet()) {
+        for (let k in onlineUserMap.keySet()) {
             console.log('k is :' + k);
+            if(!wss.clients.hasOwnProperty(k)) continue;
             if (!wss.clients[k]) {
                 var logoutUser = onlineUserMap.remove(k);
                 if (logoutUser) {

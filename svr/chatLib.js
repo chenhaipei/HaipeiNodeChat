@@ -15,7 +15,7 @@
     // 服务端口
     exports.HOST = "localhost";
 
-    var analyzeMessageData = exports.analyzeMessageData = function (message) {
+    let analyzeMessageData = exports.analyzeMessageData = function (message) {
         try {
             return JSON.parse(message);
         } catch (error) {
@@ -24,9 +24,9 @@
         }
 
         return null;
-    }
+    };
 
-    var getMsgFirstDataValue = exports.getMsgFirstDataValue = function (mData) {
+    let getMsgFirstDataValue = exports.getMsgFirstDataValue = function (mData) {
         if (mData && mData.values && mData.values[0]) {
             return mData.values[0];
         }
@@ -34,15 +34,15 @@
             return mData.values[1];
         }
         return '';
-    }
+    };
 
-    var getMsgSecondDataValue = exports.getMsgSecondDataValue = function (mData) {
-        console.log('content:'+JSON.stringify(mData));
+    let getMsgSecondDataValue = exports.getMsgSecondDataValue = function (mData) {
+        console.log('content:' + JSON.stringify(mData));
         if (mData && mData.values && mData.values[1]) {
             return mData.values[1];
         }
         return '';
-    }
+    };
 
 
 })((function () {

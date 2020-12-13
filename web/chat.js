@@ -1,15 +1,15 @@
-var HOST = chatLib.HOST;
-var EVENT_TYPE = chatLib.EVENT_TYPE;
-var PORT = chatLib.PORT;
+let HOST = chatLib.HOST;
+let EVENT_TYPE = chatLib.EVENT_TYPE;
+let PORT = chatLib.PORT;
 
 $(document).ready(function () {
-    var socket = null;
-    var onlineUserMap = new zTool.SimpleMap();
-    var currentUser = null;
-    var currentUserNick = null;
-    var uid = 1;
-    var connCounter = 1;
-    var flag = 0;
+    let socket = null;
+    let onlineUserMap = new zTool.SimpleMap();
+    let currentUser = null;
+    let currentUserNick = null;
+    let uid = 1;
+    let connCounter = 1;
+    let flag = 0;
 
     if (typeof WebSocket === 'undefined') {
         $("#prePage").hide();
@@ -17,11 +17,12 @@ $(document).ready(function () {
     }
 
     function updateOnlineUser() {
-        var html = ["<div>在线用户(" + onlineUserMap.size() + ")</div>"];
+        let html = ["<div>在线用户(" + onlineUserMap.size() + ")</div>"];
         if (onlineUserMap.size() > 0) {
-            var users = onlineUserMap.values();
-            for (var i in users) {
+            let users = onlineUserMap.values();
+            for (let i in users) {
                 html.push("<div>");
+                if(!users.hasOwnProperty(i)) continue;
                 if (users[i].uid === currentUser.uid) {
                     html.push("<b>" + formatUserString(users[i]) + "(我)</b>");
                 } else {
@@ -81,13 +82,14 @@ $(document).ready(function () {
         socket = new WebSocket("ws://" + HOST + ":" + PORT);
         onlineUserMap = new zTool.SimpleMap();
         socket.onmessage = function (event) {
-            var mData = chatLib.analyzeMessageData(event.data);
+            let i;
+            let mData = chatLib.analyzeMessageData(event.data);
 
             if (mData && mData.event) {
                 switch (mData.event) {
                     case EVENT_TYPE.LOGIN:
                         // 新用户连接
-                        var newUser = mData.values[0];
+                        let newUser = mData.values[0];
                         if (flag === 0) {
                             currentUser = newUser;
                             flag = 1;
@@ -101,7 +103,7 @@ $(document).ready(function () {
 
                     case EVENT_TYPE.LOGOUT:
                         // 用户退出
-                        var user = mData.values[0];
+                        let user = mData.values[0];
                         alert(user.uid);
                         onlineUserMap.remove(user.uid);
                         updateOnlineUser();
@@ -110,7 +112,7 @@ $(document).ready(function () {
 
                     case EVENT_TYPE.SPEAK:
                         // 用户发言
-                        var content = mData.values[0];
+                        let content = mData.values[0];
                         if (mData.user.uid !== currentUser.uid) {
                             appendMessage(formatUserTalkString(mData.user));
                             appendMessage("<span>&nbsp;&nbsp;</span>" + content);
@@ -119,11 +121,12 @@ $(document).ready(function () {
 
                     case EVENT_TYPE.LIST_USER:
                         // 获取当前在线用户
-                        var users = mData.values;
+                        let users = mData.values;
                         if (users && users.length) {
-                            for (var i in users) {
+                            for (i in users) {
                                 // alert(i + ' user : ' + users[i].uid);
                                 // alert('uid: ' + currentUser.uid);
+                                if(!users.hasOwnProperty(i)) continue;
                                 if (users[i].uid !== currentUser.uid) onlineUserMap.put(users[i].uid, users[i]);
                             }
                         }
@@ -134,9 +137,10 @@ $(document).ready(function () {
                     case EVENT_TYPE.LIST_HISTORY:
                         // 获取历史消息
                         //{'user':data.user,'content':content,'time':new Date().getTime()}
-                        var data = mData.values;
+                        let data = mData.values;
                         if (data && data.length) {
-                            for (var i in data) {
+                            for (i in data) {
+                                if(!data.hasOwnProperty(i)) continue;
                                 appendMessage(formatUserTalkHisString(data[i].user, data[i].time));
                                 appendMessage("<span>&nbsp;&nbsp;</span>" + data[i].content);
                             }
@@ -188,7 +192,7 @@ $(document).ready(function () {
     });
 
     function sendMsg() {
-        var value = $.trim($("#message").val());
+        let value = $.trim($("#message").val());
         if (value) {
             $("#message").val('');
             appendMessage(formatUserTalkString(currentUser));
