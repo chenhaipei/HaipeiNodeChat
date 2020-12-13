@@ -36,6 +36,15 @@
         return '';
     }
 
+    var getMsgSecondDataValue = exports.getMsgSecondDataValue = function (mData) {
+        console.log('content:'+JSON.stringify(mData));
+        if (mData && mData.values && mData.values[1]) {
+            return mData.values[1];
+        }
+        return '';
+    }
+
+
 })((function () {
     if (typeof exports === 'undefined') {
         window.chatLib = {};

@@ -38,14 +38,22 @@ wss.on('connection', function (conn) {
                     console.log(onlineUserMap);
                     connCounter++;
                     // 把新用户的信息广播给在线用户
-                    for (var i = 0; i < wss.clients.length; i++) {
-                        wss.clients[i].send(JSON.stringify({
+                    wss.clients.forEach(function (client) {
+                        client.send(JSON.stringify({
                             'user': onlineUserMap.get(uid),
                             'event': EVENT_TYPE.LOGIN,
                             'values': [newUser],
                             'counter': connCounter
-                        }));
-                    }
+                        }))
+                    });
+                    // for (var i = 0; i < wss.clients.size; i++) {
+                    //     wss.clients[i].send(JSON.stringify({
+                    //         'user': onlineUserMap.get(uid),
+                    //         'event': EVENT_TYPE.LOGIN,
+                    //         'values': [newUser],
+                    //         'counter': connCounter
+                    //     }));
+                    // }
                     break;
 
                 case EVENT_TYPE.SPEAK:
@@ -108,13 +116,21 @@ wss.on('connection', function (conn) {
                 var logoutUser = onlineUserMap.remove(k);
                 if (logoutUser) {
                     // 把已退出用户的信息广播给在线用户
-                    for (var i = 0; i < wss.clients.length; i++) {
-                        wss.clients[i].send(JSON.stringify({
+                    wss.clients.forEach(function(client){
+                     client.send(JSON.stringify({
                             'uid': k,
                             'event': EVENT_TYPE.LOGOUT,
                             'values': [logoutUser]
                         }));
-                    }
+                    });
+
+                    // for (var i = 0; i < wss.clients.length; i++) {
+                    //     wss.clients[i].send(JSON.stringify({
+                    //         'uid': k,
+                    //         'event': EVENT_TYPE.LOGOUT,
+                    //         'values': [logoutUser]
+                    //     }));
+                    // }
                 }
             }
         }
