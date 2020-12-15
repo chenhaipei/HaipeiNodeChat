@@ -4,7 +4,8 @@
     "private": true,
     "dependencies": {
         "ws": "latest",
-        "lang": "latest"
+        "lang": "latest",
+        "mongoose": "^5.11.8"
     },
     "devDependencies": {
         "sys": "0.0.1"

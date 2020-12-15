@@ -8,9 +8,25 @@
     <script src="../svr/chatLib.js"></script>
     <script src="DateUtil.js"></script>
     <script src="chat.js"></script>
+    <script src="../svr/mongoose.js"></script>
+    <script>
+        $(function () {
+            $.get("/history", function (data) {
+                let history = JSON.parse(data);
+
+                for (i = 0; i < history.length; i++) {
+                    let his = "<li>" + history[i].user + " (" + history[i].time + ")" + history[i].content + "</li>";
+                    $("#history").append(his);
+                }
+            });
+        });
+    </script>
     <link rel="stylesheet" href="main.css">
+
+
 </head>
 <body>
+
 <div id='errorPage' class='page' style='display:none;'>
     <h1>
         WebSocket is not supported by this browser, please use chrome or Microsoft Edge or opera or firefox
@@ -30,6 +46,8 @@
                 <textarea placeholder="Hey, just say something" id="message"></textarea>
             </div>
             <div style='overflow:hidden;'>
+                <input class='f-left' type='button' value='View messages' id="history"/>
+                <ul id="history"></ul>
                 <input class='f-right' type='button' value='Send' id="send"/>
             </div>
         </div>

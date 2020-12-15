@@ -13,7 +13,6 @@ let historyContent = new zTool.CircleList(100);
 let connCounter = 1;
 let uid = null;
 
-
 wss.on('connection', function (conn) {
     conn.on('message', function (message) {
         let mData = chatLib.analyzeMessageData(message);
@@ -118,9 +117,8 @@ wss.on('connection', function (conn) {
                 }
             }
         }
-        console.log('User:{\'uid\':' + logoutUser.uid + ',\'nickname\':' + logoutUser.nick + '} has leaved');
+        console.log('User:{\'uid\':' + logoutUser.uid + ',\'nickname\':' + logoutUser.nick + '} has left.');
         console.log('current connecting counter: ' + wss.clients.length);
-
     });
 });
 console.log('Start listening on port ' + PORT);
