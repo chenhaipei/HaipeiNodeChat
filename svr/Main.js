@@ -15,16 +15,13 @@ let uid = null;
 
 
 wss.on('connection', function (conn) {
-    // conn.on('open',function() {
-    //  conn.send(JSON.stringify({'uid':connCounter}));
-    // });
     conn.on('message', function (message) {
         let mData = chatLib.analyzeMessageData(message);
 
         if (mData && mData.EVENT) {
             switch (mData.EVENT) {
                 case EVENT_TYPE.LOGIN:
-                    // 新用户连接
+                    // New user connection
                     uid = connCounter;
                     let newUser = {
                         'uid': connCounter,
@@ -33,11 +30,11 @@ wss.on('connection', function (conn) {
                     console.log('User:{\'uid\':' + newUser.uid + ',\'nickname\':' + newUser.nick + '}coming on protocol websocket draft ' + conn.protocolVersion);
                     console.log('current connecting counter: ' + wss.clients.length);
                     console.log(uid);
-                    // 把新连接的用户增加到在线用户列表
+                    // Add newly connected users to the list of online users
                     onlineUserMap.put(uid, newUser);
                     console.log(onlineUserMap);
                     connCounter++;
-                    // 把新用户的信息广播给在线用户
+                    // Broadcast information about new users to online users
                     wss.clients.forEach(function (client) {
                         client.send(JSON.stringify({
                             'user': onlineUserMap.get(uid),
@@ -46,20 +43,12 @@ wss.on('connection', function (conn) {
                             'counter': connCounter
                         }))
                     });
-                    // for (var i = 0; i < wss.clients.size; i++) {
-                    //     wss.clients[i].send(JSON.stringify({
-                    //         'user': onlineUserMap.get(uid),
-                    //         'event': EVENT_TYPE.LOGIN,
-                    //         'values': [newUser],
-                    //         'counter': connCounter
-                    //     }));
-                    // }
                     break;
 
                 case EVENT_TYPE.SPEAK:
-                    // 用户发言
+                    // The user speaks something
                     let content = chatLib.getMsgSecondDataValue(mData);
-                    //同步用户发言
+                    //Synchronize user message
                     for (let j = 0; j < wss.clients.length; j++) {
                         wss.clients[j].send(JSON.stringify({
                             'user': onlineUserMap.get(chatLib.getMsgFirstDataValue(mData)),
@@ -75,7 +64,7 @@ wss.on('connection', function (conn) {
                     break;
 
                 case EVENT_TYPE.LIST_USER:
-                    // 获取当前在线用户
+                    // Get the current online user
                     conn.send(JSON.stringify({
                         'user': onlineUserMap.get(uid),
                         'event': EVENT_TYPE.LIST_USER,
@@ -84,7 +73,7 @@ wss.on('connection', function (conn) {
                     break;
 
                 case EVENT_TYPE.LIST_HISTORY:
-                    // 获取最近的聊天记录
+                    // Get the most recent chat history message
                     conn.send(JSON.stringify({
                         'user': onlineUserMap.get(uid),
                         'event': EVENT_TYPE.LIST_HISTORY,
@@ -97,7 +86,9 @@ wss.on('connection', function (conn) {
             }
 
         } else {
-            // 事件类型出错，记录日志，向当前用户发送错误信息
+            // There was an error with the event type.
+            // Load and log,
+            // Send an error message to the current user
             console.log('desc:message,userId:' + chatLib.getMsgFirstDataValue(mData) + ',message:' + message);
             conn.send(JSON.stringify({
                 'uid': chatLib.getMsgFirstDataValue(mData),
@@ -109,14 +100,14 @@ wss.on('connection', function (conn) {
         console.log(Array.prototype.join.call(arguments, ", "));
     });
     conn.on('close', function () {
-        // 从在线用户列表移除
+        // Remove from the list of online users
         for (let k in onlineUserMap.keySet()) {
             console.log('k is :' + k);
             if(!wss.clients.hasOwnProperty(k)) continue;
             if (!wss.clients[k]) {
                 var logoutUser = onlineUserMap.remove(k);
                 if (logoutUser) {
-                    // 把已退出用户的信息广播给在线用户
+                    // Broadcast information about the exited user to the online user
                     wss.clients.forEach(function(client){
                      client.send(JSON.stringify({
                             'uid': k,
@@ -124,14 +115,6 @@ wss.on('connection', function (conn) {
                             'values': [logoutUser]
                         }));
                     });
-
-                    // for (var i = 0; i < wss.clients.length; i++) {
-                    //     wss.clients[i].send(JSON.stringify({
-                    //         'uid': k,
-                    //         'event': EVENT_TYPE.LOGOUT,
-                    //         'values': [logoutUser]
-                    //     }));
-                    // }
                 }
             }
         }

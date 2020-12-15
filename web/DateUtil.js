@@ -5,8 +5,6 @@ Date.prototype.format = function (style) {
         "h+": this.getHours(),     //hour
         "m+": this.getMinutes(),   //minute
         "s+": this.getSeconds(),   //second
-        "w+": "天一二三四五六".charAt(this.getDay()),   //week
-        "q+": Math.floor((this.getMonth() + 3) / 3),  //quarter
         "S": this.getMilliseconds() //millisecond
     };
     if (/(y+)/.test(style)) {

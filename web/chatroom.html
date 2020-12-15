@@ -1,7 +1,7 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>websocket and node.js</title>
+    <title>Haipei Node Chat</title>
     <meta charset="utf-8"/>
     <script src="jquery.js"></script>
     <script src="../svr/zTool.js"></script>
@@ -13,13 +13,13 @@
 <body>
 <div id='errorPage' class='page' style='display:none;'>
     <h1>
-        当前浏览器不支持WebSocket，请使用chrome or opera or firefox 18
+        WebSocket is not supported by this browser, please use chrome or Microsoft Edge or opera or firefox
     </h1>
 </div>
 <div id='prePage' class='page' style='width:690px;text-align:center;'>
     <label for='nickInput'></label>
-    <input id='nickInput' type='text' placeholder="请输入您的昵称"/>&nbsp;
-    <input id='open' type='button' value='进入聊天室'/>
+    <input id='nickInput' type='text' placeholder="Please enter your nickname"/>&nbsp;
+    <input id='open' type='button' value='Enter the chat room'/>
 </div>
 <div id='mainPage' class='page' style='display:none;'>
     <div style='overflow:hidden;'>
@@ -27,11 +27,10 @@
             <div id='talkFrame'></div>
             <div id='inputDiv'>
                 <label for="message"></label>
-                <textarea placeholder="嗨，随便说点啥呗" id="message"></textarea>
+                <textarea placeholder="Hey, just say something" id="message"></textarea>
             </div>
             <div style='overflow:hidden;'>
-                <!--                <input class='f-left' type='button' value='创建聊天室' id="createroom"/>-->
-                <input class='f-right' type='button' value='发送' id="send"/>
+                <input class='f-right' type='button' value='Send' id="send"/>
             </div>
         </div>
         <div class='talkRight'>

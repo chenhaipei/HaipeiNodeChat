@@ -17,14 +17,14 @@ $(document).ready(function () {
     }
 
     function updateOnlineUser() {
-        let html = ["<div>在线用户(" + onlineUserMap.size() + ")</div>"];
+        let html = ["<div>Online users(" + onlineUserMap.size() + ")</div>"];
         if (onlineUserMap.size() > 0) {
             let users = onlineUserMap.values();
             for (let i in users) {
                 html.push("<div>");
                 if(!users.hasOwnProperty(i)) continue;
                 if (users[i].uid === currentUser.uid) {
-                    html.push("<b>" + formatUserString(users[i]) + "(我)</b>");
+                    html.push("<b>" + formatUserString(users[i]) + "(me)</b>");
                 } else {
                     html.push(formatUserString(users[i]));
                 }
@@ -72,7 +72,7 @@ $(document).ready(function () {
     $("#open").click(function () {
         currentUserNick = $.trim($("#nickInput").val());
         if ('' === currentUserNick) {
-            alert('请先输入昵称');
+            alert('Please enter your nickname first');
             return;
         }
         $("#prePage").hide();
@@ -88,7 +88,7 @@ $(document).ready(function () {
             if (mData && mData.event) {
                 switch (mData.event) {
                     case EVENT_TYPE.LOGIN:
-                        // 新用户连接
+                        // The new user connection
                         let newUser = mData.values[0];
                         if (flag === 0) {
                             currentUser = newUser;
@@ -98,20 +98,20 @@ $(document).ready(function () {
                         uid = connCounter;
                         onlineUserMap.put(uid, newUser);
                         updateOnlineUser();
-                        appendMessage(formatUserTalkString(newUser) + "[进入房间]");
+                        appendMessage(formatUserTalkString(newUser) + "[Enter the room]");
                         break;
 
                     case EVENT_TYPE.LOGOUT:
-                        // 用户退出
+                        // The user exits
                         let user = mData.values[0];
                         alert(user.uid);
                         onlineUserMap.remove(user.uid);
                         updateOnlineUser();
-                        appendMessage(formatUserTalkString(user) + "[离开房间]");
+                        appendMessage(formatUserTalkString(user) + "[Left the room]");
                         break;
 
                     case EVENT_TYPE.SPEAK:
-                        // 用户发言
+                        // The user speaks something
                         let content = mData.values[0];
                         if (mData.user.uid !== currentUser.uid) {
                             appendMessage(formatUserTalkString(mData.user));
@@ -120,7 +120,7 @@ $(document).ready(function () {
                         break;
 
                     case EVENT_TYPE.LIST_USER:
-                        // 获取当前在线用户
+                        // Get the current online user
                         let users = mData.values;
                         if (users && users.length) {
                             for (i in users) {
@@ -135,7 +135,7 @@ $(document).ready(function () {
                         break;
 
                     case EVENT_TYPE.LIST_HISTORY:
-                        // 获取历史消息
+                        // Get a history message
                         //{'user':data.user,'content':content,'time':new Date().getTime()}
                         let data = mData.values;
                         if (data && data.length) {
@@ -144,13 +144,13 @@ $(document).ready(function () {
                                 appendMessage(formatUserTalkHisString(data[i].user, data[i].time));
                                 appendMessage("<span>&nbsp;&nbsp;</span>" + data[i].content);
                             }
-                            appendMessage("<span class='gray'>==================以上为最近的历史消息==================</span>");
+                            appendMessage("<span class='gray'>==================The above is the most recent messages==================</span>");
                         }
                         break;
 
                     case EVENT_TYPE.ERROR:
-                        // 出错了
-                        appendMessage("[系统繁忙...]");
+                        // Something went wrong
+                        appendMessage("[The system is busy...]");
                         break;
 
                     default:
@@ -161,11 +161,11 @@ $(document).ready(function () {
         };
 
         socket.onerror = function () {
-            appendMessage("[网络出错啦，请稍后重试...]");
+            appendMessage("[There is something wrong with the network, please try again later...]");
         };
 
         socket.onclose = function () {
-            appendMessage("[网络连接已被关闭...]");
+            appendMessage("[The network connection has been turned off...]");
             close();
         };
 
@@ -207,9 +207,6 @@ $(document).ready(function () {
     $("#send").click(function () {
         sendMsg();
     });
-
-    $("#createroom").click(function (event) {
-    })
 
     function show(value) {
         $("#response").html(value);

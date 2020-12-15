@@ -1,5 +1,5 @@
 (function (exports) {
-    // 事件类型
+    // The type of event
     exports.EVENT_TYPE = {
         'LOGIN': 'LOGIN',
         'LOGOUT': 'LOGOUT',
@@ -9,16 +9,16 @@
         'LIST_HISTORY': 'LIST_HISTORY'
     };
 
-    // 服务端口
+    // The server port
     exports.PORT = 9800;
 
-    // 服务端口
+    // The server port
     exports.HOST = "localhost";
     exports.analyzeMessageData = function (message) {
         try {
             return JSON.parse(message);
         } catch (error) {
-            // 收到了非正常格式的数据
+            // Data in an abnormal format was received?
             console.log('method:analyzeMsgData,error:' + error);
         }
 
