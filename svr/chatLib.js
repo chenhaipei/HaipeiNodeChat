@@ -14,8 +14,7 @@
 
     // 服务端口
     exports.HOST = "localhost";
-
-    let analyzeMessageData = exports.analyzeMessageData = function (message) {
+    exports.analyzeMessageData = function (message) {
         try {
             return JSON.parse(message);
         } catch (error) {
@@ -25,8 +24,7 @@
 
         return null;
     };
-
-    let getMsgFirstDataValue = exports.getMsgFirstDataValue = function (mData) {
+    exports.getMsgFirstDataValue = function (mData) {
         if (mData && mData.values && mData.values[0]) {
             return mData.values[0];
         }
@@ -35,16 +33,13 @@
         }
         return '';
     };
-
-    let getMsgSecondDataValue = exports.getMsgSecondDataValue = function (mData) {
+    exports.getMsgSecondDataValue = function (mData) {
         console.log('content:' + JSON.stringify(mData));
         if (mData && mData.values && mData.values[1]) {
             return mData.values[1];
         }
         return '';
     };
-
-
 })((function () {
     if (typeof exports === 'undefined') {
         window.chatLib = {};

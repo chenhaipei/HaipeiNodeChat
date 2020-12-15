@@ -1,4 +1,4 @@
-let sys = require("sys");
+require("sys");
 let WebSocketServer = require('../node_modules/ws').Server;
 let chatLib = require("./chatLib");
 let EVENT_TYPE = chatLib.EVENT_TYPE;
