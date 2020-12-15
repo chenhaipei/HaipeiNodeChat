@@ -4,8 +4,7 @@
     "private": true,
     "dependencies": {
         "ws": "latest",
-        "lang": "latest",
-        "webrtc.io": "latest"
+        "lang": "latest"
     },
     "devDependencies": {
         "sys": "0.0.1"
