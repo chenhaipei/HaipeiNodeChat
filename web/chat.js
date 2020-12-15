@@ -69,7 +69,7 @@ $(document).ready(function () {
 
     }
 
-    $("#open").click(function (event) {
+    $("#open").click(function () {
         currentUserNick = $.trim($("#nickInput").val());
         if ('' === currentUserNick) {
             alert('请先输入昵称');
@@ -160,16 +160,16 @@ $(document).ready(function () {
             }
         };
 
-        socket.onerror = function (event) {
+        socket.onerror = function () {
             appendMessage("[网络出错啦，请稍后重试...]");
         };
 
-        socket.onclose = function (event) {
+        socket.onclose = function () {
             appendMessage("[网络连接已被关闭...]");
             close();
         };
 
-        socket.onopen = function (event) {
+        socket.onopen = function () {
             socket.send(JSON.stringify({
                 'EVENT': EVENT_TYPE.LOGIN,
                 'values': [currentUserNick]
@@ -204,9 +204,10 @@ $(document).ready(function () {
         }
     }
 
-    $("#send").click(function (event) {
+    $("#send").click(function () {
         sendMsg();
     });
+
     $("#createroom").click(function (event) {
     })
 
