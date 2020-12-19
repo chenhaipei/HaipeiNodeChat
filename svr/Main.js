@@ -69,7 +69,7 @@ wss.on('connection', function (conn) {
                         loginDate: Date.now(),
                         logoutDate: null
                     })
-                    user.save(function (err, loginUser) {
+                    user.save(function (err, loginuser) {
                         if (err) return console.log(err);
                         console.log("data save ok")
                     })
@@ -108,7 +108,7 @@ wss.on('connection', function (conn) {
                     //save in db
                     let history = new historyModel({
                         uid: onlineUserMap.get(uid),
-                        nickName: onlineUserMap.get(chatLib.getMsgFirstDataValue(mData)),
+                        nickName: chatLib.getMsgFirstDataValue(mData),
                         time: new Date().getTime(),
                         content: chatLib.getMsgSecondDataValue(mData)
                     })
@@ -172,6 +172,20 @@ wss.on('connection', function (conn) {
             } else {
                 if (loginuser) {
                     loginUserModel.updateOne(loginuser, {logoutDate: Date.now()}, function (err, model) {
+                        if (err) console.log(err);
+                    })
+                }
+            }
+        });
+
+        //save history in db
+        historyModel.findById(conn.oId, function (err, history) {
+            //console.log(history);
+            if (err) {
+                console.log(err)
+            } else {
+                if (history) {
+                    historyModel.updateOne(history, function (err, model) {
                         if (err) console.log(err);
                     })
                 }

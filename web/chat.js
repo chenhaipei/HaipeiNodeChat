@@ -22,7 +22,7 @@ $(document).ready(function () {
             let users = onlineUserMap.values();
             for (let i in users) {
                 html.push("<div>");
-                if(!users.hasOwnProperty(i)) continue;
+                if (!users.hasOwnProperty(i)) continue;
                 if (users[i].uid === currentUser.uid) {
                     html.push("<b>" + formatUserString(users[i]) + "(me)</b>");
                 } else {
@@ -66,7 +66,7 @@ $(document).ready(function () {
     }
 
     function close() {
-
+        window.close();
     }
 
     $("#open").click(function () {
@@ -127,7 +127,7 @@ $(document).ready(function () {
                             for (i in users) {
                                 // alert(i + ' user : ' + users[i].uid);
                                 // alert('uid: ' + currentUser.uid);
-                                if(!users.hasOwnProperty(i)) continue;
+                                if (!users.hasOwnProperty(i)) continue;
                                 if (users[i].uid !== currentUser.uid) onlineUserMap.put(users[i].uid, users[i]);
                             }
                         }
@@ -141,7 +141,7 @@ $(document).ready(function () {
                         let data = mData.values;
                         if (data && data.length) {
                             for (i in data) {
-                                if(!data.hasOwnProperty(i)) continue;
+                                if (!data.hasOwnProperty(i)) continue;
                                 appendMessage(formatUserTalkHisString(data[i].user, data[i].time));
                                 appendMessage("<span>&nbsp;&nbsp;</span>" + data[i].content);
                             }
@@ -192,6 +192,10 @@ $(document).ready(function () {
         }
     });
 
+    $("#send").click(function () {
+        sendMsg();
+    });
+
     function sendMsg() {
         let value = $.trim($("#message").val());
         if (value) {
@@ -205,9 +209,17 @@ $(document).ready(function () {
         }
     }
 
-    $("#send").click(function () {
-        sendMsg();
+    $("#history").click(function () {
+        historyMsg();
     });
+
+    function historyMsg() {
+        let collections = db.getCollectionNames();
+        for(let i = 0; i< collections.length; i++){
+            print('History: ' + collections[i]); // print the name of each collection
+            db.getCollection(collections[i]).find().forEach(printjson); //and then print the json of each of its elements
+        }
+    }
 
     function show(value) {
         $("#response").html(value);

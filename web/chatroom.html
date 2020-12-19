@@ -8,18 +8,6 @@
     <script src="../svr/chatLib.js"></script>
     <script src="DateUtil.js"></script>
     <script src="chat.js"></script>
-    <script>
-        $(function () {
-            $.get("/history", function (data) {
-                let history = JSON.parse(data);
-
-                for (i = 0; i < history.length; i++) {
-                    let his = "<li>" + history[i].user + " (" + history[i].time + ")" + history[i].content + "</li>";
-                    $("#history").append(his);
-                }
-            });
-        });
-    </script>
     <link rel="stylesheet" href="main.css">
 
 
@@ -46,7 +34,6 @@
             </div>
             <div style='overflow:hidden;'>
                 <input type='button' style="float: left;" value='View history' id="history"/>
-                <ul id="history"></ul>
                 <input type='button' style="float: right;" value='Send' id="send"/>
             </div>
         </div>
