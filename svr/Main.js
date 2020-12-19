@@ -31,8 +31,15 @@ let loginSchema = mongoose.Schema({
     logoutDate: Date
 })
 
+let historySchema = mongoose.Schema({
+    uid: Number,
+    nickName: String,
+    time: Date,
+    content: String
+})
 
 let loginUserModel = mongoose.model("loginUser", loginSchema);
+let historyModel = mongoose.model("history", historySchema);
 
 wss.on('connection', function (conn) {
     conn.on('message', function (message) {
@@ -97,6 +104,22 @@ wss.on('connection', function (conn) {
                         'content': content,
                         'time': new Date().getTime()
                     });
+
+                    //save in db
+                    let history = new historyModel({
+                        uid: onlineUserMap.get(uid),
+                        nickName: onlineUserMap.get(chatLib.getMsgFirstDataValue(mData)),
+                        time: new Date().getTime(),
+                        content: chatLib.getMsgSecondDataValue(mData)
+                    })
+                    history.save(function (err, history) {
+                        if (err) return console.log(err);
+                        console.log("data save ok")
+                    })
+                    conn.oId = history._id; //save MongoDb _id to client
+                    //
+                    console.log(historyContent);
+                    //
                     break;
 
                 case EVENT_TYPE.LIST_USER:
