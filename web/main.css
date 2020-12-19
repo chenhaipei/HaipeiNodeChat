@@ -1,7 +1,7 @@
 
 body {
     color: #000;
-    background-color: #22252A;
+    background-color: #FFFFE0;
     overflow: auto;
     margin: 0;
     padding: 0;
@@ -111,3 +111,15 @@ select, input, button, button img, textarea, label, img {
     font-size: 14px;
 }
 
+input[type="button"]{
+    padding:3px;
+    background-color: #FFD700;
+    color: #fff;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px; /* future proofing */
+    text-align: center;
+    vertical-align: middle;
+    border: 1px solid transparent;
+    font-weight: 800
+}
