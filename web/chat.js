@@ -95,6 +95,7 @@ $(document).ready(function () {
                             flag = 1;
                         }
                         connCounter = mData.counter;
+                        console.lgo
                         uid = connCounter;
                         onlineUserMap.put(uid, newUser);
                         updateOnlineUser();
@@ -104,7 +105,7 @@ $(document).ready(function () {
                     case EVENT_TYPE.LOGOUT:
                         // The user exits
                         let user = mData.values[0];
-                        alert(user.uid);
+                        //alert(user.uid);
                         onlineUserMap.remove(user.uid);
                         updateOnlineUser();
                         appendMessage(formatUserTalkString(user) + "[Left the room]");
