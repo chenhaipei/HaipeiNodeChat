@@ -1,16 +1,31 @@
+//Creating a Web Socket server becomes easy because Web Socket API and the API of the node-web socket-server framework have helped us encapsulate it, just call it directly
+//     The main thing is to create a Web Socket server and initialize some variables,
+//     Set the server-side handling for various events.
+
 //require("sys");
 let WebSocket = require('ws')
+// Create a Web Socket server,
 let WebSocketServer = WebSocket.Server;
+// Load some of the required node modules
 let chatLib = require("./chatLib");
+//Introduce the char Lib module,
+// Introduces export objects
 let EVENT_TYPE = chatLib.EVENT_TYPE;
+//Gets the type of user event
 let PORT = chatLib.PORT;
+//Gets the listening port
 let wss = new WebSocketServer({
     port: PORT
 });
+//Create a new web socket server with a listening port for PORT
 
+// Define and initialize some variables,
 let zTool = require("./zTool");
+//The zTool module is introduced
 let onlineUserMap = new zTool.SimpleMap();
+//Get information about the current list of online users
 let historyContent = new zTool.CircleList(100);
+//Get the latest 100 current history chats messages
 let connCounter = 1;
 let uid = null;
 let mongoose = require('mongoose');
@@ -42,10 +57,11 @@ let loginUserModel = mongoose.model("loginUser", loginSchema);
 let historyModel = mongoose.model("history", historySchema);
 
 wss.on('connection', function (conn) {
+//In the case of 'connection', if a message event occurs on the connection, the user may log in, chat, refresh the list of online users, and get the latest history.
     conn.on('message', function (message) {
         let mData = chatLib.analyzeMessageData(message);
-
         if (mData && mData.EVENT) {
+            //Determine the user EVENT_TYPE, give the corresponding response.
             switch (mData.EVENT) {
                 case EVENT_TYPE.LOGIN:
                     // New user connection
@@ -155,9 +171,12 @@ wss.on('connection', function (conn) {
             }));
         }
     });
+    //If the type of event is not a regular behavior
+    // The system reported an error to the current user.
     conn.on('error', function () {
         console.log(Array.prototype.join.call(arguments, ", "));
     });
+    // When the connection goes wrong and the user exits, also give a corresponding response
     conn.on('close', function () {
         // Remove from the list of online users
         //console.log(onlineUserMap);

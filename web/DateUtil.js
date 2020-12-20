@@ -1,3 +1,4 @@
+//Date Util .js is encapsulated as a unified function of the date format
 Date.prototype.format = function (style) {
     let o = {
         "M+": this.getMonth() + 1, //month

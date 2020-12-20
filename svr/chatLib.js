@@ -1,5 +1,14 @@
+//Define the output object,
+// Six event types are defined
+// The server port is defined.
+// The analyze Message Data method is defined
+// Used to convert received jason data into JavaScript objects
+
+
 (function (exports) {
     // The type of event
+    // There are six types of events for a user.
+    // Login,Logout,Chat,Update the list of users,Get the most recent chat history,show an error occurred.
     exports.EVENT_TYPE = {
         'LOGIN': 'LOGIN',
         'LOGOUT': 'LOGOUT',

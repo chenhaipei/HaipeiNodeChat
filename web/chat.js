@@ -1,9 +1,16 @@
+//To handle the various actions of the user on the page,
+// The DOM structure of html is operated by javascript to adjust the contents of the page in real time,
+// Make the appropriate interactive response
+
 let HOST = chatLib.HOST;
 let EVENT_TYPE = chatLib.EVENT_TYPE;
 let PORT = chatLib.PORT;
 
+// When the page is loaded, first determine if the browser supports Web Socket.
+// By default, the login interface with id pre Page is displayed.
 
 $(document).ready(function () {
+    // Define and initialize some variables and objects
     let socket = null;
     let onlineUserMap = new zTool.SimpleMap();
     let currentUser = null;
@@ -12,9 +19,10 @@ $(document).ready(function () {
     let connCounter = 1;
     let flag = 0;
 
+// However, if Web Socket is not supported
     if (typeof WebSocket === 'undefined') {
-        $("#prePage").hide();
-        $("#errorPage").show();
+        $("#prePage").hide();// Hide id as the div of pre Page,
+        $("#errorPage").show();// Show id as the div of the error Page,
     }
 
     function updateOnlineUser() {
@@ -55,6 +63,7 @@ $(document).ready(function () {
         return formatUserString(user) + new Date(time).format("yyyy-MM-dd hh:mm:ss") + " ";
     }
 
+    //Reset the connection:Online list,Chat display area,The contents of the nickname input box
     function reset() {
         if (socket) {
             socket.close();
@@ -70,6 +79,7 @@ $(document).ready(function () {
         window.close();
     }
 
+    //You can pass the validation as long as it is not empty
     $("#open").click(function () {
         currentUserNick = $.trim($("#nickInput").val());
         if ('' === currentUserNick) {
@@ -80,8 +90,12 @@ $(document).ready(function () {
         $("#mainPage").show();
         reset();
 
+        //Create a Web Socket connection,
         socket = new WebSocket("ws://" + HOST + ":" + PORT);
+        // Get online list information,
         onlineUserMap = new zTool.SimpleMap();
+        // When an on message event occurs on the connection,
+        // determine the user's specific event type, manipulate the DOM for different types, and modify the contents of the html element.
         socket.onmessage = function (event) {
             let i;
             let mData = chatLib.analyzeMessageData(event.data);
