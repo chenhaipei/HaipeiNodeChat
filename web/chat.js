@@ -8,7 +8,6 @@ let PORT = chatLib.PORT;
 
 // When the page is loaded, first determine if the browser supports Web Socket.
 // By default, the login interface with id pre Page is displayed.
-
 $(document).ready(function () {
     // Define and initialize some variables and objects
     let socket = null;
@@ -174,6 +173,7 @@ $(document).ready(function () {
                         //{'user':data.user,'content':content,'time':new Date().getTime()}
                         let alldata = mData.values;
                         if (alldata && alldata.length) {
+                            $("#historyFrame").empty();
                             for (i in alldata) {
                                 if (!alldata.hasOwnProperty(i)) continue;
                                 showMessage(formatUserTalkHisString(alldata[i].user, alldata[i].time));
@@ -231,7 +231,6 @@ $(document).ready(function () {
     });
 
     $("#send").click(function () {
-
         sendMsg();
     });
 
@@ -253,6 +252,9 @@ $(document).ready(function () {
     }
 
     $("#history").click(function () {
+        //Cancel the bubbling event
+        event.stopPropagation();//necessarily
+        $("#historyFrame").slideToggle();
         historyMsg();
     });
 
@@ -261,14 +263,10 @@ $(document).ready(function () {
             'EVENT': EVENT_TYPE.ALL_HISTORY
         }));
     }
-
-    // function historyMsg() {
-    //     let collections = db.getCollectionNames();
-    //     for(let i = 0; i< collections.length; i++){
-    //         print('History: ' + collections[i]); // print the name of each collection
-    //         db.getCollection(collections[i]).find().forEach(printjson); //and then print the json of each of its elements
-    //     }
-    // }
+    //History hides when clicking on a blank or other area
+    $(document).click(function () {
+        $("#historyFrame").slideUp('slow');
+    });
 
     function show(value) {
         $("#response").html(value);

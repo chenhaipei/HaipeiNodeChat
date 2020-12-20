@@ -44,31 +44,5 @@
         </div>
     </div>
 </div>
-
 </body>
-<script type="text/javascript">
-    $(function () {
-        $("#history").click(function (event) {
-            //取消冒泡事件
-            event.stopPropagation();//这句是必须
-            //若css已经给divTop定位则不需要再定位
-            var offset = $(event.target).offset();
-            $("#historyFrame").css({
-                top: offset.top +
-                    $(event.target).height + "px",
-                left: offset.left
-            });
-            $("#historyFrame").slideToggle();
-        });
-
-        //点击空白或者其他区域时divTop隐藏
-        $(document).click(function () {
-            $("#historyFrame").slideUp('slow');
-        });
-        //点击divTop自身隐藏
-        $("#historyFrame").click(function () {
-            $(this.fadeOut(1000));
-        })
-    });
-</script>
 </html>

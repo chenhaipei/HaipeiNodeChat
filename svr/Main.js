@@ -229,7 +229,6 @@ wss.on('connection', function (conn) {
         console.log(onlineUserMap);
         console.log(logoutUser);
         wss.clients.forEach(function (client) {
-
             if (client !== conn && client.readyState === WebSocket.OPEN) {
                 console.log('logoutUid:' + conn.uid);
                 client.send(JSON.stringify({
@@ -240,34 +239,6 @@ wss.on('connection', function (conn) {
             }
 
         })
-        // for (let k in onlineUserMap.keySet()) {
-        //     console.log('k is :' + k);
-        //     //console.log(!wss.clients.hasOwnProperty(k));
-        //     //if (!wss.clients.hasOwnProperty(k)) continue;
-        //     console.log(conn.name);
-        //     if(wss.clients)
-        //     //if (!wss.clients[k]) {
-        //     console.log('remove');
-        //     let logoutUser = onlineUserMap.remove(k);
-        //     if (logoutUser) {
-        //         //save in db
-        //         let user = new logoutUserModel({uid: logoutUser.uid, nickName: logoutUser.nick, loginDate: Date.now()})
-        //         user.save(function (err, loginUser) {
-        //             if (err) return console.log(err);
-        //             console.log("data save ok")
-        //         })
-        //         //
-        //         // Broadcast information about the exited user to the online user
-        //         wss.clients.forEach(function (client) {
-        //             client.send(JSON.stringify({
-        //                 'uid': k,
-        //                 'event': EVENT_TYPE.LOGOUT,
-        //                 'values': [logoutUser]
-        //             }));
-        //         });
-        //     }
-        //     //}
-        // }
         console.log('User:{\'uid\':' + logoutUser.uid + ',\'nickname\':' + logoutUser.nick + '} has left.');
         console.log('current connecting counter: ' + wss.clients.size);
     });
