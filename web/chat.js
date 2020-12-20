@@ -88,7 +88,7 @@ $(document).ready(function () {
     $("#open").click(function () {
         currentUserNick = $.trim($("#nickInput").val());
         if ('' === currentUserNick) {
-            alert('Please enter your nickname first');
+            alert('Please enter your nickname first!');
             return;
         }
         $("#prePage").hide();
@@ -231,11 +231,16 @@ $(document).ready(function () {
     });
 
     $("#send").click(function () {
+
         sendMsg();
     });
 
     function sendMsg() {
         let value = $.trim($("#message").val());
+        if ('' === value) {
+            alert('NO empty messages,\n Feel free to say anything!');
+            return;
+        }
         if (value) {
             $("#message").val('');
             appendMessage(formatUserTalkString(currentUser));
