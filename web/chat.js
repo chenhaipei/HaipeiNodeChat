@@ -2,6 +2,7 @@ let HOST = chatLib.HOST;
 let EVENT_TYPE = chatLib.EVENT_TYPE;
 let PORT = chatLib.PORT;
 
+
 $(document).ready(function () {
     let socket = null;
     let onlineUserMap = new zTool.SimpleMap();
