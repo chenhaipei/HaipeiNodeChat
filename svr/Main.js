@@ -74,6 +74,7 @@ wss.on('connection', function (conn) {
                     console.log('current connecting counter: ' + wss.clients.size);
                     console.log(uid);
                     conn.uid = connCounter;
+                    conn.nick = newUser.nick;
                     console.log('name:' + conn.uid);
                     // Add newly connected users to the list of online users
                     onlineUserMap.put(uid, newUser);
@@ -120,11 +121,12 @@ wss.on('connection', function (conn) {
                         'content': content,
                         'time': new Date().getTime()
                     });
-
+                    console.log("getUid:" + conn.uid);
+                    console.log('nick:' + conn.nick);
                     //save in db
                     let history = new historyModel({
-                        uid: onlineUserMap.get(uid),
-                        nickName: chatLib.getMsgFirstDataValue(mData),
+                        uid: conn.uid,
+                        nickName: conn.nick,
                         time: new Date().getTime(),
                         content: chatLib.getMsgSecondDataValue(mData)
                     })
