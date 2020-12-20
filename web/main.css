@@ -61,7 +61,7 @@ select, input, button, button img, textarea, label, img {
     width: 625px;
 }
 
-#talkFrame {
+#talkFrame,#historyFrame {
     height: 360px;
     padding: 5px 5px;
 
@@ -94,7 +94,7 @@ select, input, button, button img, textarea, label, img {
     overflow-y: scroll;
 }
 
-.page, #talkFrame, #onlineUsers, #message {
+.page, #talkFrame,#historyFrame, #onlineUsers, #message {
     border-radius: 10px 10px 10px 10px;
     -moz-box-shadow: 1px 1px 10px #333333;
     -webkit-box-shadow: 1px 1px 10px #333333;

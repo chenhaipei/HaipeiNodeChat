@@ -15,7 +15,8 @@
         'SPEAK': 'SPEAK',
         'LIST_USER': 'LIST_USER',
         'ERROR': 'ERROR',
-        'LIST_HISTORY': 'LIST_HISTORY'
+        'LIST_HISTORY': 'LIST_HISTORY',
+        'ALL_HISTORY': 'ALL_HISTORY'
     };
 
     // The server port

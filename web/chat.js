@@ -48,6 +48,10 @@ $(document).ready(function () {
         $("#talkFrame").append("<div>" + msg + "</div>");
     }
 
+    function showMessage(msg) {
+        $("#historyFrame").append("<div>" + msg + "</div>");
+    }
+
     function formatUserString(user) {
         if (!user) {
             return '';
@@ -72,6 +76,7 @@ $(document).ready(function () {
         onlineUserMap = null;
         $("#onlineUsers").html("");
         $("#talkFrame").html("");
+        $("#historyFrame").html("");
         $("#nickInput").val("");
     }
 
@@ -164,6 +169,20 @@ $(document).ready(function () {
                         }
                         break;
 
+                    case EVENT_TYPE.ALL_HISTORY:
+                        // Get all history message
+                        //{'user':data.user,'content':content,'time':new Date().getTime()}
+                        let alldata = mData.values;
+                        if (alldata && alldata.length) {
+                            for (i in alldata) {
+                                if (!alldata.hasOwnProperty(i)) continue;
+                                showMessage(formatUserTalkHisString(alldata[i].user, alldata[i].time));
+                                showMessage("<span>&nbsp;&nbsp;</span>" + alldata[i].content);
+                            }
+                            showMessage("<span class='gray'>==================The above is all chat messages==================</span>");
+                        }
+                        break;
+
                     case EVENT_TYPE.ERROR:
                         // Something went wrong
                         appendMessage("[The system is busy...]");
@@ -198,6 +217,10 @@ $(document).ready(function () {
                 'EVENT': EVENT_TYPE.LIST_HISTORY,
                 'values': [currentUserNick]
             }));
+            socket.send(JSON.stringify({
+                'EVENT': EVENT_TYPE.ALL_HISTORY,
+                'values': [currentUserNick]
+            }));
         };
     });
 
@@ -229,12 +252,18 @@ $(document).ready(function () {
     });
 
     function historyMsg() {
-        let collections = db.getCollectionNames();
-        for(let i = 0; i< collections.length; i++){
-            print('History: ' + collections[i]); // print the name of each collection
-            db.getCollection(collections[i]).find().forEach(printjson); //and then print the json of each of its elements
-        }
+        socket.send(JSON.stringify({
+            'EVENT': EVENT_TYPE.ALL_HISTORY
+        }));
     }
+
+    // function historyMsg() {
+    //     let collections = db.getCollectionNames();
+    //     for(let i = 0; i< collections.length; i++){
+    //         print('History: ' + collections[i]); // print the name of each collection
+    //         db.getCollection(collections[i]).find().forEach(printjson); //and then print the json of each of its elements
+    //     }
+    // }
 
     function show(value) {
         $("#response").html(value);

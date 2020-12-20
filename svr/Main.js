@@ -158,6 +158,15 @@ wss.on('connection', function (conn) {
                     }));
                     break;
 
+                case EVENT_TYPE.ALL_HISTORY:
+                    // Get all chat history message
+                    conn.send(JSON.stringify({
+                        'user': onlineUserMap.get(uid),
+                        'event': EVENT_TYPE.ALL_HISTORY,
+                        'values': historyContent.values()
+                    }));
+                    break;
+
                 default:
                     break;
             }
